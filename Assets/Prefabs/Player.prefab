@@ -70,7 +70,7 @@ Camera:
   far clip plane: 1000
   field of view: 34
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 10
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -167,6 +167,8 @@ GameObject:
   - component: {fileID: 8257605971546685523}
   - component: {fileID: 8313358501883590646}
   - component: {fileID: 6797222184413981649}
+  - component: {fileID: 3361468302003862981}
+  - component: {fileID: 2102863223985901705}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -417,7 +419,7 @@ AudioSource:
   m_GameObject: {fileID: 8500067041352090895}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 24300002, guid: 4ae680714fe8ae3468471e6eeaa240ed, type: 2}
+  OutputAudioMixerGroup: {fileID: 3253896843687469417, guid: 764c83eaf3d867044aa9e6ad0fca18b4, type: 2}
   m_audioClip: {fileID: 8300000, guid: 2a6c043f18e7d274aa0db69a360bedd6, type: 3}
   m_Resource: {fileID: 8300000, guid: 2a6c043f18e7d274aa0db69a360bedd6, type: 3}
   m_PlayOnAwake: 0
@@ -513,3 +515,59 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8500067041352090895}
   m_Enabled: 1
+--- !u!114 &3361468302003862981
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8500067041352090895}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8efc6b1d64977384eb3405357896c656, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_PositionModel:
+    SynchronizeEnabled: 1
+    TeleportEnabled: 1
+    TeleportIfDistanceGreaterThan: 3
+    InterpolateOption: 2
+    InterpolateMoveTowardsSpeed: 1
+    InterpolateLerpSpeed: 1
+    ExtrapolateOption: 0
+    ExtrapolateSpeed: 1
+    ExtrapolateIncludingRoundTripTime: 1
+    ExtrapolateNumberOfStoredPositions: 1
+  m_RotationModel:
+    SynchronizeEnabled: 1
+    InterpolateOption: 1
+    InterpolateRotateTowardsSpeed: 180
+    InterpolateLerpSpeed: 5
+  m_ScaleModel:
+    SynchronizeEnabled: 0
+    InterpolateOption: 0
+    InterpolateMoveTowardsSpeed: 1
+    InterpolateLerpSpeed: 0
+--- !u!114 &2102863223985901705
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8500067041352090895}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents:
+  - {fileID: 3361468302003862981}
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0

@@ -1,10 +1,13 @@
 using UnityEngine;
+using Photon.Pun;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 
-public class MainMenu : MonoBehaviour
+public class MainMenu : MonoBehaviourPunCallbacks
 {
-
+    public Button button;
+    public Button button2;
     public SettingMenu settingmenu;
     private void Start()
     {
@@ -14,9 +17,20 @@ public class MainMenu : MonoBehaviour
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
+
+    public void StartMultiplayerGame()
+    {
+        PhotonNetwork.ConnectUsingSettings();
+    }
     public void SettingMenu()
     {
         gameObject.SetActive(false);
         settingmenu.gameObject.SetActive(true);
+    }
+
+    public override void OnConnectedToMaster()
+    {
+        Debug.Log("Connected to master");
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 }

@@ -10,7 +10,7 @@ public class PlayerController : MonoBehaviour
 
     bool canjump;
     bool isinground;
-    float speed = 1000f;
+    float speed = 5000f;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
