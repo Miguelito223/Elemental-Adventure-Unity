@@ -3,16 +3,25 @@ using UnityEngine;
 
 public class Launcher : MonoBehaviourPunCallbacks
 {
-    public PhotonView playerprefab;
-    public Transform Spawnpoint;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    public GameObject playerPrefab; // Debe ser GameObject en lugar de PhotonView
+    public Transform spawnPoint;
+
     void Start()
     {
-        PhotonNetwork.JoinRandomOrCreateRoom();
+        if (!PhotonNetwork.OfflineMode)
+        {
+            PhotonNetwork.JoinRandomOrCreateRoom();
+        }
+        else
+        {
+            // Instanciación en modo offline
+            Instantiate(playerPrefab, spawnPoint.position, spawnPoint.rotation);
+        }
     }
 
     public override void OnJoinedRoom()
     {
-        GameObject player =  PhotonNetwork.Instantiate(playerprefab.name, Spawnpoint.position, Spawnpoint.rotation);
+        // Instancia el jugador en red
+        PhotonNetwork.Instantiate(playerPrefab.name, spawnPoint.position, spawnPoint.rotation);
     }
 }

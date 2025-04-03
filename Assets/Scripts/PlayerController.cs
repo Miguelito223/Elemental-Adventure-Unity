@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour
     bool canjump;
     bool isinground;
     float speed = 5000f;
+    float jumpForce = 2000f;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -67,7 +68,7 @@ public class PlayerController : MonoBehaviour
         {
             canjump = false;
             animator.SetBool("jumping", true);
-            RB2d.AddForce(new Vector2(0, speed));
+            RB2d.AddForce(new Vector2(0, jumpForce));
         }
 
         if (gameObject.GetComponent<Rigidbody2D>().linearVelocity.y < 0)
