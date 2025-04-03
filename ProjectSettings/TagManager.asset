@@ -6,6 +6,8 @@ TagManager:
   tags:
   - terrain
   - background
+  - Launcher
+  - SpawnPoint
   layers:
   - Default
   - TransparentFX
