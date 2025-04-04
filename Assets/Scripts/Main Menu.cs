@@ -29,6 +29,11 @@ public class MainMenu : MonoBehaviourPunCallbacks
         settingmenu.gameObject.SetActive(true);
     }
 
+    public void Exit()
+    {
+        Application.Quit();
+    }
+
     public override void OnConnectedToMaster()
     {
         Debug.Log("Connected to master");
