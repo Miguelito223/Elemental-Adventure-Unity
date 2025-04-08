@@ -12,8 +12,9 @@ GameObject:
   - component: {fileID: 3241104343931024738}
   - component: {fileID: 7833016643296166162}
   - component: {fileID: 3953664195313700863}
-  - component: {fileID: 3249604284842181057}
   - component: {fileID: 389304173104256049}
+  - component: {fileID: 3249604284842181057}
+  - component: {fileID: 1475502627025128438}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -82,7 +83,7 @@ SpriteRenderer:
   m_SortingOrder: 0
   m_Sprite: {fileID: 8364545860556462395, guid: c1a2563ec4cfe554e8732959403c94e0, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
+  m_FlipX: 1
   m_FlipY: 0
   m_DrawMode: 0
   m_Size: {x: 1, y: 2}
@@ -125,7 +126,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.035705566, y: 0}
+  m_Offset: {x: 0.012977481, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -135,7 +136,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1.8426514, y: 2}
+  m_Size: {x: 1.9400175, y: 2}
   m_EdgeRadius: 0
 --- !u!61 &3953664195313700863
 BoxCollider2D:
@@ -183,23 +184,6 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1.6569824, y: 1.0716553}
   m_EdgeRadius: 0
---- !u!114 &3249604284842181057
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8527923509931790630}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 72659ffb3683715449c96209b694933f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 2
-  detectionDistance: 1
-  player: {fileID: 6111635105609221366, guid: 24266f24c1e2bba498d72cfdc9659b01, type: 3}
-  livesEnemy: 10
-  DamageCount: 3
 --- !u!50 &389304173104256049
 Rigidbody2D:
   serializedVersion: 5
@@ -211,8 +195,8 @@ Rigidbody2D:
   m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
+  m_UseAutoMass: 1
+  m_Mass: 1.7757139
   m_LinearDamping: 0
   m_AngularDamping: 0.05
   m_GravityScale: 1
@@ -227,3 +211,45 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!114 &3249604284842181057
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8527923509931790630}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72659ffb3683715449c96209b694933f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 2
+  detectionDistance: 1
+  livesEnemy: 10
+  DamageCount: 3
+  raycastOffset: 0.5
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 8
+--- !u!95 &1475502627025128438
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8527923509931790630}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 4662b5ddad7c2cf4896aa2e9c1f8cd52, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

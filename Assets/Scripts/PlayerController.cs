@@ -1,6 +1,5 @@
 using Photon.Pun;
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviourPunCallbacks
@@ -15,8 +14,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
     bool canjump;
     bool isinground;
-    public float speed = 1000f;
-    public float jumpForce = 1000f;
+    public float speed = 100f; // Ajusta la velocidad segï¿½n sea necesario
     public float bulletCooldown = 1f; // Tiempo de espera entre disparos (1 segundo)
     public float bulletSpeed = 10f;
     bool canShoot = true;
@@ -34,7 +32,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
         if (!photonView.IsMine && !PhotonNetwork.OfflineMode) return;
 
         float moveInput = Input.GetAxisRaw("Horizontal");
-        RB2d.linearVelocity = new Vector2(moveInput * speed * Time.deltaTime, RB2d.linearVelocity.y);
+        RB2d.AddForce(new Vector2(moveInput * speed * Time.deltaTime, 0));
 
         animator.SetBool("moving", moveInput != 0);
         spriterender.flipX = moveInput < 0;
@@ -47,18 +45,18 @@ public class PlayerController : MonoBehaviourPunCallbacks
             canjump = false;
             isinground = false;
             animator.SetBool("jumping", true);
-            RB2d.linearVelocity = new Vector2(RB2d.linearVelocity.x, jumpForce * Time.deltaTime);
+            RB2d.AddForce(new Vector2(0, speed));
         }
 
-        // Calcular la dirección hacia el mouse (esto ya no afecta al jugador)
+        // Calcular la direcciï¿½n hacia el mouse (esto ya no afecta al jugador)
         Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        mousePosition.z = 0; // Asegurarse de que esté en el plano 2D (sin componente z)
+        mousePosition.z = 0; // Asegurarse de que estï¿½ en el plano 2D (sin componente z)
         Vector2 direction = (mousePosition - bulletPos.position).normalized;
 
         // Rotar solo la bala cuando se dispare, no el jugador
         if (Input.GetKeyDown(KeyCode.S) && canShoot)
         {
-            StartCoroutine(Shoot(direction)); // Pasa la dirección hacia el método de disparo
+            StartCoroutine(Shoot(direction)); // Pasa la direcciï¿½n hacia el mï¿½todo de disparo
         }
 
         if (RB2d.linearVelocity.y < -0.1f)
@@ -79,7 +77,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         bulletPos.transform.rotation = Quaternion.Euler(0, 0, angle); // Girar la bala
 
-        // Instanciar la bala en la posición de disparo
+        // Instanciar la bala en la posiciï¿½n de disparo
         GameObject bulletInstance = Instantiate(bullet, bulletSpawn.position, bulletSpawn.rotation);
         Rigidbody2D bulletRb = bulletInstance.GetComponent<Rigidbody2D>();
 
