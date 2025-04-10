@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
+    private string enemyID; // Identificador único para el enemigo
+
     public float speed = 2f;
     public float detectionDistance = 1f; // Distancia para detectar el borde del precipicio
     private bool isFacingRight = true; // Para saber si el enemigo está mirando hacia la derecha
@@ -15,6 +17,20 @@ public class Enemy : MonoBehaviour
 
     void Start()
     {
+        // Verificar si ya existe un GUID guardado para este enemigo
+        if (PlayerPrefs.HasKey(gameObject.name + "_GUID"))
+        {
+            // Recuperar el GUID guardado
+            enemyID = PlayerPrefs.GetString(gameObject.name + "_GUID");
+        }
+        else
+        {
+            // Generar un nuevo GUID y guardarlo
+            enemyID = System.Guid.NewGuid().ToString();
+            PlayerPrefs.SetString(gameObject.name + "_GUID", enemyID);
+            PlayerPrefs.Save();
+        }
+
         rb = GetComponent<Rigidbody2D>();
         if (rb == null)
         {
@@ -26,14 +42,37 @@ public class Enemy : MonoBehaviour
         {
             UnityEngine.Debug.LogError("No se ha encontrado el componente Animator en el enemigo");
         }
+
+        // Verificar si el enemigo ya ha sido derrotado
+        if (PlayerPrefs.GetInt(enemyID, 0) == 1)
+        {
+            // Si el enemigo ya fue derrotado, desactivarlo
+            gameObject.SetActive(false);
+        }
     }
 
     void Update()
     {
-        // Si el jugador está a la izquierda del enemigo, cambiar la dirección
-
         MoveEnemy();
         DetectEdge(); // Detecta el borde
+        DetectWall(); // Detecta paredes
+    }
+
+    void DetectWall()
+    {
+        // Calcular la posición de origen del raycast con el desplazamiento
+        Vector2 raycastOrigin = transform.position;
+        raycastOrigin.x += isFacingRight ? raycastOffset : -raycastOffset;
+
+        // Raycast para detectar si hay una pared frente al enemigo
+        RaycastHit2D wallHit = Physics2D.Raycast(raycastOrigin, isFacingRight ? Vector2.right : Vector2.left, detectionDistance, groundLayer);
+        UnityEngine.Debug.DrawRay(raycastOrigin, (isFacingRight ? Vector2.right : Vector2.left) * detectionDistance, Color.blue); // Línea de debug para visualizar el raycast
+
+        // Si el raycast detecta una pared, cambiar la dirección
+        if (wallHit.collider != null)
+        {
+            Flip();
+        }
     }
 
     void MoveEnemy()
@@ -57,22 +96,13 @@ public class Enemy : MonoBehaviour
         // Si no hay suelo debajo del enemigo, significa que está cerca de un precipicio
         if (groundHit)
         {
-            // Si el raycast golpea algo, verificar si es el suelo
             if (groundHit.collider == null)
             {
-                UnityEngine.Debug.Log("Flip");
-                // Si no hay suelo, cambiar la dirección
                 Flip();
-            }
-            else
-            {
-                UnityEngine.Debug.Log("Collider: " + groundHit.collider.name);
             }
         }
         else
         {
-            UnityEngine.Debug.Log("Flip");
-            // Si no hay suelo, cambiar la dirección
             Flip();
         }
     }
@@ -96,6 +126,16 @@ public class Enemy : MonoBehaviour
 
     void Kill()
     {
+        Defeat();
+    }
+
+    public void Defeat()
+    {
+        // Marcar al enemigo como derrotado
+        PlayerPrefs.SetInt(enemyID, 1);
+        PlayerPrefs.Save();
+
+        // Desactivar al enemigo
         Destroy(gameObject);
     }
 
@@ -103,8 +143,7 @@ public class Enemy : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            // Llamar a la función para perder vida
-            GameManager.instance.LoseLife();
+            GameManager.instance.LoseLife(); // Sincronizar vidas;
         }
         else if (collision.CompareTag("Bullet"))
         {

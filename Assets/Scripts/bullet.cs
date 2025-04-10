@@ -1,6 +1,7 @@
 using UnityEngine;
+using Photon.Pun;
 
-public class Bullet : MonoBehaviour
+public class Bullet : MonoBehaviourPunCallbacks
 {
     void Start()
     {
@@ -14,8 +15,15 @@ public class Bullet : MonoBehaviour
         {
             GameManager.instance.LoseLife();
         }
-       
-        Destroy(gameObject);
+
+        if (PhotonNetwork.IsConnected)
+        {
+            PhotonNetwork.Destroy(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject); // Destruir después de 5 segundos
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -25,6 +33,13 @@ public class Bullet : MonoBehaviour
             GameManager.instance.LoseLife();
         }
 
-        Destroy(gameObject);
+        if (PhotonNetwork.IsConnected)
+        {
+            PhotonNetwork.Destroy(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject); // Destruir después de 5 segundos
+        }
     }
 }

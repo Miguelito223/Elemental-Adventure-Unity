@@ -1,6 +1,7 @@
 using UnityEngine;
+using Photon.Pun;
 
-public class MovingPlatform : MonoBehaviour
+public class MovingPlatform : MonoBehaviourPunCallbacks
 {
     public Transform pointA, pointB; // Puntos de destino
     public float speed = 2f; // Velocidad de movimiento

@@ -1,27 +1,34 @@
 using Photon.Pun;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Launcher : MonoBehaviourPunCallbacks
 {
-    public GameObject playerPrefab; // Debe ser GameObject en lugar de PhotonView
+    public GameObject playerPrefab; // Prefab del jugador
     public Transform spawnPoint;
 
     void Start()
     {
-        if (!PhotonNetwork.OfflineMode)
+
+        // Verificar si el juego está en modo offline
+        if (PhotonNetwork.OfflineMode)
         {
-            PhotonNetwork.JoinRandomOrCreateRoom();
+            Debug.Log("Modo offline activado. Instanciando jugador localmente...");
+            Instantiate(playerPrefab, spawnPoint.position, spawnPoint.rotation); // Instanciar jugador localmente
         }
         else
         {
-            // Instanciación en modo offline
-            Instantiate(playerPrefab, spawnPoint.position, spawnPoint.rotation);
-        }
-    }
+            // Conectar al servidor de Photon
+            if (PhotonNetwork.IsConnectedAndReady && PhotonNetwork.InRoom)
+            {
+                PhotonNetwork.Instantiate(playerPrefab.name, spawnPoint.position, spawnPoint.rotation);
+            }
+            else
+            {
+                Debug.LogWarning("No estás en una sala. No se puede instanciar el objeto.");
+            }
 
-    public override void OnJoinedRoom()
-    {
-        // Instancia el jugador en red
-        PhotonNetwork.Instantiate(playerPrefab.name, spawnPoint.position, spawnPoint.rotation);
+        }
+
     }
 }

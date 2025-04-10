@@ -9,6 +9,7 @@ TagManager:
   - Launcher
   - SpawnPoint
   - Bullet
+  - energyball
   layers:
   - Default
   - TransparentFX

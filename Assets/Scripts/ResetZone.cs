@@ -1,5 +1,6 @@
 using Photon.Pun.Demo.PunBasics;
 using UnityEngine;
+using Photon.Pun;
 
 public class ResetZone : MonoBehaviour
 {

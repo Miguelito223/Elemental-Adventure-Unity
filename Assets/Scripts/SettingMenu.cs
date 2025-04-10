@@ -49,6 +49,12 @@ public class SettingMenu : MonoBehaviour
         SetMusicSound();
     }
 
+    public void ResetPlayerPrefs()
+    {
+        PlayerPrefs.DeleteAll(); // Borra todos los datos guardados en PlayerPrefs
+        PlayerPrefs.Save(); // Asegúrate de guardar los cambios
+        Debug.Log("Todos los datos de PlayerPrefs han sido borrados.");
+    }
 
     public void back()
     {
