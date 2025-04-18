@@ -9,7 +9,7 @@ public class BoxTrigger : MonoBehaviourPunCallbacks
     {
         if (other.CompareTag("Player")) // Verifica si el jugador toca el objeto  
         {
-            GameManager.instance.VictoryRPC(); // Llama al método de victoria  
+            other.gameObject.GetComponent<PlayerController>().VictoryRPC(); // Llama al método de victoria  
         }
     }
 }

@@ -17,7 +17,7 @@ public class MainMenu : MonoBehaviourPunCallbacks
     public void StartGame()
     {
         PhotonNetwork.OfflineMode = true;
-        int savedLevel = PlayerPrefs.GetInt("Level", 1); // Cargar el nivel guardado
+        int savedLevel = PlayerPrefs.GetInt("Level", 3); // Cargar el nivel guardado
         SceneManager.LoadScene(savedLevel);
     }
     public void StartMultiplayerGame()
@@ -58,7 +58,7 @@ public class MainMenu : MonoBehaviourPunCallbacks
         else
         {
             Debug.Log("Sala creada correctamente.");
-            int savedLevel = PlayerPrefs.GetInt("Level", 1); // Cargar el nivel guardado
+            int savedLevel = PlayerPrefs.GetInt("Level", 3); // Cargar el nivel guardado
             PhotonNetwork.CurrentRoom.SetCustomProperties(new ExitGames.Client.Photon.Hashtable { { "Level", savedLevel } });
             Debug.Log($"Propiedad 'Level' establecida en {savedLevel}.");
             PhotonNetwork.LoadLevel(savedLevel); // Usar Photon para cargar el nivel sincronizado

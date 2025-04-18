@@ -1,6 +1,7 @@
 using UnityEngine;
+using Photon.Pun;
 
-public class Enemy : MonoBehaviour
+public class Enemy : MonoBehaviour, IPunObservable
 {
     private string enemyID; // Identificador único para el enemigo
 
@@ -107,7 +108,7 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    void Flip()
+    public void Flip()
     {
         isFacingRight = !isFacingRight;
         Vector3 localScale = transform.localScale;
@@ -115,7 +116,7 @@ public class Enemy : MonoBehaviour
         transform.localScale = localScale;
     }
 
-    void Damage(int Damage)
+    public void Damage(int Damage)
     {
         livesEnemy -= Damage;
         if (livesEnemy <= 0)
@@ -124,7 +125,7 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    void Kill()
+    public void Kill()
     {
         Defeat();
     }
@@ -139,15 +140,39 @@ public class Enemy : MonoBehaviour
         Destroy(gameObject);
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    public void OnCollisionEnter2D(UnityEngine.Collision2D collision)
     {
-        if (collision.CompareTag("Player"))
+        if (collision.gameObject.CompareTag("Player")) // Cambiar a collision.gameObject.CompareTag  
         {
-            GameManager.instance.LoseLife(); // Sincronizar vidas;
+            collision.gameObject.GetComponent<PlayerController>().LoseLife(); // Sincronizar vidas;  
         }
-        else if (collision.CompareTag("Bullet"))
+        else if (collision.gameObject.CompareTag("Bullet")) // Cambiar a collision.gameObject.CompareTag  
         {
             Damage(DamageCount);
+        }
+    }
+
+    void IPunObservable.OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            // Enviar datos al otro jugador  
+            stream.SendNext(enemyID);
+            // Enviar el estado de la moneda (activa o no) al resto de los jugadores
+            stream.SendNext(gameObject.activeSelf);
+            stream.SendNext(livesEnemy);
+            stream.SendNext(DamageCount);
+            stream.SendNext(isFacingRight);
+        }
+        else
+        {
+            enemyID = (string)stream.ReceiveNext();
+            // Recibir el estado de la moneda desde otro jugador
+            bool isActive = (bool)stream.ReceiveNext();
+            gameObject.SetActive(isActive);
+            livesEnemy = (int)stream.ReceiveNext();
+            DamageCount = (int)stream.ReceiveNext();
+            isFacingRight = (bool)stream.ReceiveNext();
         }
     }
 }

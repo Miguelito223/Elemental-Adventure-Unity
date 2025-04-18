@@ -9,11 +9,11 @@ public class Bullet : MonoBehaviourPunCallbacks
         Destroy(gameObject, 5f);
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            GameManager.instance.LoseLife();
+            collision.gameObject.GetComponent<PlayerController>().LoseLife();
         }
 
         if (PhotonNetwork.IsConnected)
@@ -26,11 +26,16 @@ public class Bullet : MonoBehaviourPunCallbacks
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    public void OnTriggerEnter2D(UnityEngine.Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            GameManager.instance.LoseLife();
+            collision.gameObject.GetComponent<PlayerController>().LoseLife();
+        }
+        else if (collision.gameObject.CompareTag("Enemy"))
+        {
+            int damageCount = collision.gameObject.GetComponent<Enemy>().DamageCount;
+            collision.gameObject.GetComponent<Enemy>().Damage(damageCount);
         }
 
         if (PhotonNetwork.IsConnected)

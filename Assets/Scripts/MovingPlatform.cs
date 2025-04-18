@@ -10,34 +10,38 @@ public class MovingPlatform : MonoBehaviourPunCallbacks
 
     void Start()
     {
-        target = pointB.position; // Comienza moviéndose a pointB
+        target = pointB.position; // Comienza moviÃ©ndose a pointB
     }
 
-    void Update()
+    void FixedUpdate()
     {
         // Mueve la plataforma hacia el objetivo
         transform.position = Vector3.MoveTowards(transform.position, target, speed * Time.deltaTime);
 
-        // Si llega al objetivo, cambia de dirección
+        // Si llega al objetivo, cambia de direcciÃ³n
         if (Vector3.Distance(transform.position, target) < 0.1f)
         {
             target = (target == pointA.position) ? pointB.position : pointA.position;
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (other.CompareTag("Player"))
+        if (collision.gameObject.CompareTag("Player"))
         {
-            other.transform.SetParent(transform); // Hace que el jugador se mueva con la plataforma
+
+            collision.transform.SetParent(transform);
+
         }
     }
 
-    private void OnTriggerExit2D(Collider2D other)
+    private void OnCollisionExit2D(Collision2D collision)
     {
-        if (other.CompareTag("Player"))
+        if (collision.gameObject.CompareTag("Player"))
         {
-            other.transform.SetParent(null); // Evita que el jugador quede pegado a la plataforma al bajarse
+
+            collision.transform.SetParent(null);
+
         }
     }
 
