@@ -12,17 +12,8 @@ public class SettingMenu : MonoBehaviour
 
     private void Start()
     {
+        loadsettings();
         gameObject.SetActive(false);
-
-        if (PlayerPrefs.HasKey("MusicVolume") && PlayerPrefs.HasKey("SFXVolume"))
-        {
-            loadsettings();
-        }
-        else
-        {
-            SetSFXSound();
-            SetMusicSound();
-        }
     }
 
     public void SetSFXSound()
@@ -42,8 +33,11 @@ public class SettingMenu : MonoBehaviour
 
     private void loadsettings()
     {
-        SFXSlider.value = PlayerPrefs.GetFloat("MusicVolume");
-        MusicSlider.value = PlayerPrefs.GetFloat("SFXVolume");
+        if (PlayerPrefs.HasKey("MusicVolume") && PlayerPrefs.HasKey("SFXVolume"))
+        {
+            SFXSlider.value = PlayerPrefs.GetFloat("SFXVolume");
+            MusicSlider.value = PlayerPrefs.GetFloat("MusicVolume"); 
+        }
 
         SetSFXSound();
         SetMusicSound();
