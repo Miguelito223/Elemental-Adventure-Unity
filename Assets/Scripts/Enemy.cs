@@ -1,7 +1,7 @@
 using UnityEngine;
 using Photon.Pun;
 
-public class Enemy : MonoBehaviour, IPunObservable
+public class Enemy : MonoBehaviourPunCallbacks, IPunObservable
 {
     private string enemyID; // Identificador único para el enemigo
 
@@ -136,8 +136,14 @@ public class Enemy : MonoBehaviour, IPunObservable
         PlayerPrefs.SetInt(enemyID, 1);
         PlayerPrefs.Save();
 
-        // Desactivar al enemigo
-        Destroy(gameObject);
+        if (!PhotonNetwork.OfflineMode)
+        {
+            PhotonNetwork.Destroy(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject); // Destruir después de 5 segundos  
+        }
     }
 
     public void OnCollisionEnter2D(UnityEngine.Collision2D collision)

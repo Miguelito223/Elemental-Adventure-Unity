@@ -152,6 +152,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pickupSound: {fileID: 8300000, guid: 8335f1ec860698644aa8bda8787d5db0, type: 3}
+  audioSource: {fileID: -5580282540070508214}
   EnergyID: 
 --- !u!82 &-5580282540070508214
 AudioSource:
@@ -162,10 +163,10 @@ AudioSource:
   m_GameObject: {fileID: 5502479634180413328}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
+  OutputAudioMixerGroup: {fileID: 3253896843687469417, guid: 764c83eaf3d867044aa9e6ad0fca18b4, type: 2}
+  m_audioClip: {fileID: 8300000, guid: 8335f1ec860698644aa8bda8787d5db0, type: 3}
+  m_Resource: {fileID: 8300000, guid: 8335f1ec860698644aa8bda8787d5db0, type: 3}
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0

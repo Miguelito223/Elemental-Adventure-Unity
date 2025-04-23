@@ -5,7 +5,7 @@ using Photon.Pun;
 public class EnergyBall : MonoBehaviourPunCallbacks, IPunObservable
 {
     public AudioClip pickupSound; // Sonido al recoger la moneda  
-    private AudioSource audioSource;
+    public AudioSource audioSource;
     public string EnergyID; // Identificador único para la moneda  
 
     void Start()
@@ -24,39 +24,11 @@ public class EnergyBall : MonoBehaviourPunCallbacks, IPunObservable
             PlayerPrefs.Save();
         }
 
-        audioSource = GetComponent<AudioSource>();
         // Verificar si la moneda ya ha sido recogida  
         if (PlayerPrefs.GetInt(EnergyID, 0) == 1)
         {
             // Si la moneda ya fue recogida, desactivarla  
             gameObject.SetActive(false);
-        }
-    }
-
-    public void OnCollisionEnter2D(UnityEngine.Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Player")) // Verifica si el jugador la toca  
-        {
-            // Marcar la moneda como recogida  
-            PlayerPrefs.SetInt(EnergyID, 1);
-            PlayerPrefs.Save();
-
-            collision.gameObject.GetComponent<PlayerController>().AddCoin(); // Sincronizar monedas  
-
-            audioSource.PlayOneShot(pickupSound); // Reproducir sonido  
-
-            // Desactiva la moneda y la destruye después de que termine el sonido  
-            GetComponent<SpriteRenderer>().enabled = false;
-            GetComponent<Collider2D>().enabled = false;
-
-            if (PhotonNetwork.IsConnected)
-            {
-                PhotonNetwork.Destroy(gameObject);
-            }
-            else
-            {
-                Destroy(gameObject); // Destruir después de 5 segundos  
-            }
         }
     }
 
@@ -76,7 +48,7 @@ public class EnergyBall : MonoBehaviourPunCallbacks, IPunObservable
             GetComponent<SpriteRenderer>().enabled = false;
             GetComponent<Collider2D>().enabled = false;
 
-            if (PhotonNetwork.IsConnected)
+            if (!PhotonNetwork.OfflineMode)
             {
                 PhotonNetwork.Destroy(gameObject);
             }
