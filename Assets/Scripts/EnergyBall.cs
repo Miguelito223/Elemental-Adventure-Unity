@@ -4,7 +4,7 @@ using Photon.Pun;
 
 public class EnergyBall : MonoBehaviourPunCallbacks, IPunObservable
 {
-    public AudioClip pickupSound; // Sonido al recoger la moneda  
+    public AudioClip EnergySound; // Sonido al recoger la moneda  
     public AudioSource audioSource;
     public string EnergyID; // Identificador único para la moneda  
 
@@ -27,8 +27,15 @@ public class EnergyBall : MonoBehaviourPunCallbacks, IPunObservable
         // Verificar si la moneda ya ha sido recogida  
         if (PlayerPrefs.GetInt(EnergyID, 0) == 1)
         {
-            // Si la moneda ya fue recogida, desactivarla  
-            gameObject.SetActive(false);
+            // Si la moneda ya fue recogida, destruirla 
+            if (!PhotonNetwork.OfflineMode)
+            {
+                PhotonNetwork.Destroy(gameObject);
+            }
+            else
+            {
+                Destroy(gameObject); // Destruir después de 5 segundos  
+            }
         }
     }
 
@@ -41,8 +48,9 @@ public class EnergyBall : MonoBehaviourPunCallbacks, IPunObservable
             PlayerPrefs.Save();
 
             collision.gameObject.GetComponent<PlayerController>().AddCoin(); // Sincronizar monedas  
-
-            audioSource.PlayOneShot(pickupSound); // Reproducir sonido  
+            
+            AudioClip Sound = EnergySound; // Sonido al recoger la moneda
+            audioSource.PlayOneShot(Sound); // Reproducir sonido  
 
             // Desactiva la moneda y la destruye después de que termine el sonido  
             GetComponent<SpriteRenderer>().enabled = false;
@@ -75,5 +83,5 @@ public class EnergyBall : MonoBehaviourPunCallbacks, IPunObservable
             bool isActive = (bool)stream.ReceiveNext();
             gameObject.SetActive(isActive);
         }
-    } // <- Se agregó este cierre de llave faltante para corregir el error CS1513  
+    } 
 }
